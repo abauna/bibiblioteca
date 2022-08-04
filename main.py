@@ -1,18 +1,26 @@
 # This is a sample Python script.
-
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
+import shutil
 import tkinter as tk
 def salva_emp(a,b):
    print("nome",a)
    print("autor",b)
    dat=1
+   source='livros dentro/'+b+'.txt'
+   desti ='livros fora/'+b+'.txt'
+   shutil.move(source, desti)
+   arquivo = open('livros fora/'+b+'.txt', 'a')
+   arquivo.write(a + "\n")
+   arquivo.close()
+
    pass
 def salva_dev(a,b):
    print("aluno",a)
    print("livro",b)
+   desti = 'livros dentro/' + b + '.txt'
+   source = 'livros fora/' + b + '.txt'
+   shutil.move(source, desti)
    dat = 1
    pass
 def salva_alu(a,b,c,d,e):
@@ -21,10 +29,21 @@ def salva_alu(a,b,c,d,e):
    print("telefone", e)
    print("nome",c )
    print("autor", b)
+   arquivo = open('lista_de_alunos.txt', 'a')
+   arquivo.write(c+" & "+d+" & "+e+"\n")
+   arquivo.close()
+   salva_liv(a,d)
    pass
 def salva_liv(a,b):
    print("nome",a)
    print("autor",b)
+   arquivo = open('lista_de_livros.txt', 'a')
+   arquivo.write(a+" & "+b+"\n")
+   arquivo.close()
+   arquivo = open('livros dentro/'+a+'.txt', 'a')
+   arquivo.write("autor: " + b + "\n")
+   arquivo.close()
+
    pass
 def listar():
    pass
@@ -111,7 +130,9 @@ def createNewWindow():
     buttonExample.pack()
     pass
 app = tk.Tk()
-buttona = tk.Button(app,text="Cadastrar aluno",command=cadaluno)
+app.geometry("300x700")
+app.configure(bg="black")
+buttona = tk.Button(app,text="Cadastrar aluno",command=cadaluno ,bg="blue",fg="yellow")
 buttonb = tk.Button(app, text="Cadastar o livro", command=lambda: cadlivro(True,0,0,0))
 buttonc = tk.Button(app,text="emprestar",command=emprestar)
 buttond = tk.Button(app,text="devolver",command=devolver)
