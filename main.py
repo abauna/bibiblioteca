@@ -4,17 +4,28 @@
 import shutil
 import tkinter as tk
 from PIL import Image, ImageTk
-def salva_emp(a,b):
-   print("nome",a)
-   print("autor",b)
-   dat=1
-   source='livros dentro/'+b+'.txt'
-   desti ='livros fora/'+b+'.txt'
-   shutil.move(source, desti)
-   arquivo = open('livros fora/'+b+'.txt', 'a')
-   arquivo.write(a + "\n")
-   arquivo.close()
 
+
+def erro(param):
+   print("erro no "+param)
+   pass
+
+
+def salva_emp(a,b):
+   if(b==""):
+      erro("autor")
+   elif (a==""):
+      erro("nome")
+   else:
+      print("nome",a)
+      print("autor",b)
+      dat=1
+      source='livros dentro/'+b+'.txt'
+      desti ='livros fora/'+b+'.txt'
+      shutil.move(source, desti)
+      arquivo = open('livros fora/'+b+'.txt', 'a')
+      arquivo.write(a + "\n")
+      arquivo.close()
    pass
 def salva_dev(a,b):
    print("aluno",a)
@@ -135,18 +146,9 @@ def createNewWindow():
     buttonExample.pack()
     pass
 app = tk.Tk()
-#app.geometry("300x700")
+app.geometry("300x700")
 #Marca d'água 2.png
 app.configure( )
-bg = tk.PhotoImage(file="Marca d'água 2.png")
-canvas1 = tk.Canvas(app, width=400,
-                 height=400)
-
-canvas1.pack(fill="both", expand=True)
-canvas1.create_image(0, 0, image=bg,
-                     anchor="nw")
-
-
 buttona = tk.Button(app,text="Cadastrar aluno",width=15,height=2, command=cadaluno ,fg="black")
 buttonb = tk.Button(app, text="Cadastar o livro",width=15,height=2, command=lambda: cadlivro(True,0,0,0))
 buttonc = tk.Button(app,text="emprestar",width=15,height=2,command=emprestar)
@@ -154,9 +156,9 @@ buttond = tk.Button(app,text="devolver",width=15,height=2,command=devolver)
 buttone = tk.Button(app,text="detalhes",width=30,height=2,command=listar)
 #tk.Label(app, image=tkimage).pack()
 #img_label.grid(row=0,column=0,padx= 10, pady=10)
-#buttona.grid(row=1,column=0, padx= 10, pady=10)
-#buttonb.grid(row=1,column=1, padx= 10, pady=10)
-#buttonc.grid(row=2,column=1, padx= 10, pady=10)
-#buttond.grid(row=2,column=0, padx= 10, pady=10)
-#buttone.grid(row=3,column=0, columnspan=2)
+buttona.grid(row=1,column=0, padx= 10, pady=10)
+buttonb.grid(row=1,column=1, padx= 10, pady=10)
+buttonc.grid(row=2,column=1, padx= 10, pady=10)
+buttond.grid(row=2,column=0, padx= 10, pady=10)
+buttone.grid(row=3,column=0, columnspan=2)
 app.mainloop()
