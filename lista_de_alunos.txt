@@ -1,2 +1,2 @@
-nome aluno & ctr & tel
-nome aluno & ctr & tel
+joao & 123 & 456
+eee & 456 & 123

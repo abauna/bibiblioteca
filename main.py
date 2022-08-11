@@ -5,25 +5,48 @@ import shutil
 import tkinter as tk
 from PIL import Image, ImageTk
 
-
+def verifica( string1):
+   print("alunos")
+   lista = 'lista_de_alunos.txt'
+   file1 = open(lista, "r")
+   readfile = file1.read()
+   if string1 in readfile:
+      file1.close()
+      return 1
+   else:
+      file1.close()
+      return 0
+   pass
 def erro(param):
    print("erro no "+param)
    pass
-
-
+def verifica_d(param):
+   try:
+      f = open('livros dentro/'+param+'.txt')
+      f.close()
+      print('livro encontrado ', param)
+      return 1
+   except:
+      print('livro nao encontrado ',param)
+      return 0
+   pass
 def salva_emp(a,b):
    if(b==""):
-      erro("autor")
+      erro("colocar autor")
    elif (a==""):
-      erro("nome")
+      erro("colocar nome")
+   elif(0==verifica_d((b))):
+      erro("livro nao disponivel")
+   elif(verifica(0,a)):
+      erro("aluno nao encontrado")
    else:
-      print("nome",a)
-      print("autor",b)
-      dat=1
-      source='livros dentro/'+b+'.txt'
-      desti ='livros fora/'+b+'.txt'
+      print("nome", a)
+      print("autor", b)
+      dat = 1
+      source = 'livros dentro/' + b + '.txt'
+      desti = 'livros fora/' + b + '.txt'
       shutil.move(source, desti)
-      arquivo = open('livros fora/'+b+'.txt', 'a')
+      arquivo = open('livros fora/' + b + '.txt', 'a')
       arquivo.write(a + "\n")
       arquivo.close()
    pass
@@ -36,15 +59,19 @@ def salva_dev(a,b):
    dat = 1
    pass
 def salva_alu(a,b,c,d,e):
+
    print("nomel",a)
    print("ctr",d)
    print("telefone", e)
    print("nome",c )
    print("autor", b)
-   arquivo = open('lista_de_alunos.txt', 'a')
-   arquivo.write(c+" & "+d+" & "+e+"\n")
-   arquivo.close()
-   salva_liv(a,d)
+   if (verifica(c)):
+      erro("ja tem esse nome")
+   else:
+      arquivo = open('lista_de_alunos.txt', 'a')
+      arquivo.write(c+" & "+d+" & "+e+"\n")
+      arquivo.close()
+      salva_liv(a,d)
    pass
 def salva_liv(a,b):
    print("nome",a)
@@ -55,7 +82,6 @@ def salva_liv(a,b):
    arquivo = open('livros dentro/'+a+'.txt', 'a')
    arquivo.write("autor: " + b + "\n")
    arquivo.close()
-
    pass
 def listar():
    pass
@@ -81,7 +107,6 @@ def cadlivro(fl,n,t,c):
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
    pass
-
 def emprestar():
    newWindow = tk.Toplevel(app)
    labelExample = tk.Label(newWindow, text="aluno")
@@ -118,7 +143,6 @@ def devolver():
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
    pass
-
 def cadaluno():
    newWindow = tk.Toplevel(app)
    labelExample = tk.Label(newWindow, text="Nome")
