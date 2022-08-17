@@ -3,6 +3,9 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import shutil
 import tkinter as tk
+from datetime import datetime
+from datetime import date
+
 from PIL import Image, ImageTk
 
 def verifica( string1):
@@ -12,10 +15,11 @@ def verifica( string1):
    readfile = file1.read()
    if string1 in readfile:
       file1.close()
-      return 1
+
+      return 0
    else:
       file1.close()
-      return 0
+      return 1
    pass
 def erro(param):
    print("erro no "+param)
@@ -31,47 +35,71 @@ def verifica_d(param):
       return 0
    pass
 def salva_emp(a,b):
+
    if(b==""):
       erro("colocar autor")
    elif (a==""):
       erro("colocar nome")
    elif(0==verifica_d((b))):
       erro("livro nao disponivel")
-   elif(verifica(0,a)):
+   elif(verifica(a)):
       erro("aluno nao encontrado")
    else:
       print("nome", a)
       print("autor", b)
-      dat = 1
+      now = datetime.now()
+      data = now.strftime("%m/%d/%Y, %H:%M:%S")
       source = 'livros dentro/' + b + '.txt'
       desti = 'livros fora/' + b + '.txt'
       shutil.move(source, desti)
       arquivo = open('livros fora/' + b + '.txt', 'a')
       arquivo.write(a + "\n")
       arquivo.close()
+      arquivo = open('lista_de_emprestimo.txt', 'a')
+      arquivo.write(a + " & " + b+ " "+data+"\n")
+      arquivo.close()
    pass
+
+
+def atualiza_emp(nome):
+   #   nome="joao & arte 08/16/2022, 18:08:46"
+   arquivo = open('lista_de_emprestimo.txt', 'r')
+   arquivo2 = open('lista_de_emprestimo.txt', 'w')
+   linhas = arquivo.readlines()
+   nlin=" "
+   for linha in linhas:
+       if nome in linha:
+          print("achou")
+       else:
+          nlin.__add__(linha)
+          print("nao achou")
+   arquivo2.write(nlin)
+   arquivo2.close()
+   arquivo.close()
 def salva_dev(a,b):
    print("aluno",a)
    print("livro",b)
+   arquivo = open('lista_de_emprestimo.txt', 'a')
+   atualiza_emp(a)
    desti = 'livros dentro/' + b + '.txt'
    source = 'livros fora/' + b + '.txt'
+   #joao & arte 08/16/2022, 18:08:46
    shutil.move(source, desti)
-   dat = 1
+
    pass
 def salva_alu(a,b,c,d,e):
-
    print("nomel",a)
    print("ctr",d)
    print("telefone", e)
    print("nome",c )
    print("autor", b)
-   if (verifica(c)):
+   if (0==(verifica(c))):
       erro("ja tem esse nome")
    else:
       arquivo = open('lista_de_alunos.txt', 'a')
       arquivo.write(c+" & "+d+" & "+e+"\n")
       arquivo.close()
-      salva_liv(a,d)
+      salva_liv(a,b)
    pass
 def salva_liv(a,b):
    print("nome",a)
@@ -136,8 +164,6 @@ def devolver():
    label.pack()
    entrad = tk.Entry(newWindow, font="arial 15 bold")
    entrad.pack()
-   label = tk.Label(newWindow, text="data")
-   label.pack()
    buttonExample = tk.Button(newWindow, text="concluir",command=lambda: salva_dev(entrada.get(),entrad.get()))
    buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
