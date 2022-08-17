@@ -5,7 +5,6 @@ import shutil
 import tkinter as tk
 from datetime import datetime
 from datetime import date
-
 from PIL import Image, ImageTk
 
 def listar():
@@ -26,7 +25,7 @@ def atualiza_l(nome):
         else:
             listanova.append(nomen);
     arquivo.close()
-    arquivo = open("lista_emprestimo.txt", "w")
+    arquivo = open("lista_de_emprestimo.txt", "w")
     arquivo.writelines(listanova)
     arquivo.close()
     listar()
@@ -38,7 +37,6 @@ def verifica( string1):
    readfile = file1.read()
    if string1 in readfile:
       file1.close()
-
       return 0
    else:
       file1.close()
@@ -57,8 +55,7 @@ def verifica_d(param):
       print('livro nao encontrado ',param)
       return 0
    pass
-def salva_emp(a,b):
-
+def salva_emp(newWindow,a,b):
    if(b==""):
       erro("colocar autor")
    elif (a==""):
@@ -81,24 +78,8 @@ def salva_emp(a,b):
       arquivo = open('lista_de_emprestimo.txt', 'a')
       arquivo.write(a + " & " + b+ " "+data+"\n")
       arquivo.close()
+      newWindow.destroy()
    pass
-
-
-def atualiza_emp(nome):
-   #   nome="joao & arte 08/16/2022, 18:08:46"
-   arquivo = open('lista_de_emprestimo.txt', 'r')
-   arquivo2 = open('lista_de_emprestimo.txt', 'w')
-   linhas = arquivo.readlines()
-   nlin=" "
-   for linha in linhas:
-       if nome in linha:
-          print("achou")
-       else:
-          nlin.__add__(linha)
-          print("nao achou")
-   arquivo2.write(nlin)
-   arquivo2.close()
-   arquivo.close()
 def salva_dev(a,b):
    print("aluno",a)
    print("livro",b)
@@ -108,9 +89,9 @@ def salva_dev(a,b):
    source = 'livros fora/' + b + '.txt'
    #joao & arte 08/16/2022, 18:08:46
    shutil.move(source, desti)
-
+   app.destroy();
    pass
-def salva_alu(a,b,c,d,e):
+def salva_alu(newWindowa,newWindow,a,b,c,d,e):
    print("nomel",a)
    print("ctr",d)
    print("telefone", e)
@@ -122,9 +103,11 @@ def salva_alu(a,b,c,d,e):
       arquivo = open('lista_de_alunos.txt', 'a')
       arquivo.write(c+" & "+d+" & "+e+"\n")
       arquivo.close()
-      salva_liv(a,b)
+      salva_liv(newWindow,a,b)
+   newWindowa.destroy();
    pass
-def salva_liv(a,b):
+def salva_liv(newWindow,a,b):
+
    print("nome",a)
    print("autor",b)
    arquivo = open('lista_de_livros.txt', 'a')
@@ -133,27 +116,27 @@ def salva_liv(a,b):
    arquivo = open('livros dentro/'+a+'.txt', 'a')
    arquivo.write("autor: " + b + "\n")
    arquivo.close()
+   newWindow.destroy()
    pass
 def listar():
    pass
-def cadlivro(fl,n,t,c):
+def cadlivro(newWindowa,fl,n,t,c):
    newWindow = tk.Toplevel(app)
    labelExample = tk.Label(newWindow, text="Nome")
    labelExample.pack()
    entrada = tk.Entry(newWindow, font="arial 15 bold")
    entrada.pack()
-#   print("nome:",entrada.get)
+
    label = tk.Label(newWindow, text="autor")
    label.pack()
    entrad = tk.Entry(newWindow, font="arial 15 bold")
    entrad.pack()
-   #botao = Button(janela, text="Rodar código", command=lambda: querypg(codigo.get()))
-   #botao.grid(column=0, row=2)
+
    if(fl):
-      buttonExample = tk.Button(newWindow, text="proxima",command=lambda: salva_liv(entrada.get(),entrad.get()))
+      buttonExample = tk.Button(newWindow, text="proxima",command=lambda: salva_liv(newWindow,entrada.get(),entrad.get()))
       buttonExample.pack()
    else:
-      buttonExample = tk.Button(newWindow, text="proxima", command=lambda: salva_alu(entrada.get(), entrad.get(),n,t,c))
+      buttonExample = tk.Button(newWindow, text="proxima", command=lambda: salva_alu(newWindowa,newWindow,entrada.get(), entrad.get(),n,t,c))
       buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
@@ -172,7 +155,7 @@ def emprestar():
    label.pack()
    entra = tk.Entry(newWindow, font="arial 15 bold")
    entra.pack()
-   buttonExample = tk.Button(newWindow, text="concluir",command=lambda: salva_emp(entrada.get(),entrad.get()))
+   buttonExample = tk.Button(newWindow, text="concluir",command=lambda: salva_emp(newWindow,entrada.get(),entrad.get()))
    buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
@@ -206,7 +189,7 @@ def cadaluno():
    labele.pack()
    entra = tk.Entry(newWindow, font="arial 15 bold")
    entra.pack()
-   buttonExample = tk.Button(newWindow, text="proxima", command=lambda :cadlivro(False,entrada.get(),entrad.get(),entra.get()))
+   buttonExample = tk.Button(newWindow, text="proxima", command=lambda :cadlivro(newWindow,False,entrada.get(),entrad.get(),entra.get()))
    buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
@@ -220,15 +203,14 @@ def createNewWindow():
     pass
 app = tk.Tk()
 app.geometry("300x700")
-#Marca d'água 2.png
+
 app.configure( )
 buttona = tk.Button(app,text="Cadastrar aluno",width=15,height=2, command=cadaluno ,fg="black")
 buttonb = tk.Button(app, text="Cadastar o livro",width=15,height=2, command=lambda: cadlivro(True,0,0,0))
 buttonc = tk.Button(app,text="emprestar",width=15,height=2,command=emprestar)
 buttond = tk.Button(app,text="devolver",width=15,height=2,command=devolver)
 buttone = tk.Button(app,text="detalhes",width=30,height=2,command=listar)
-#tk.Label(app, image=tkimage).pack()
-#img_label.grid(row=0,column=0,padx= 10, pady=10)
+
 buttona.grid(row=1,column=0, padx= 10, pady=10)
 buttonb.grid(row=1,column=1, padx= 10, pady=10)
 buttonc.grid(row=2,column=1, padx= 10, pady=10)
