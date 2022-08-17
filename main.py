@@ -8,6 +8,29 @@ from datetime import date
 
 from PIL import Image, ImageTk
 
+def listar():
+    print("entrou")
+    arquivo=open("lista_de_emprestimo.txt","r")
+    nomes = arquivo.readlines()
+    for nome in nomes:
+        print(nome)
+    pass
+def atualiza_l(nome):
+    print("entrou")
+    listanova = []
+    arquivo=open("lista_de_emprestimo.txt","r")
+    nomes = arquivo.readlines()
+    for nomen in nomes:
+        if nome in nomen:
+            print("");
+        else:
+            listanova.append(nomen);
+    arquivo.close()
+    arquivo = open("lista_emprestimo.txt", "w")
+    arquivo.writelines(listanova)
+    arquivo.close()
+    listar()
+    pass
 def verifica( string1):
    print("alunos")
    lista = 'lista_de_alunos.txt'
@@ -80,7 +103,7 @@ def salva_dev(a,b):
    print("aluno",a)
    print("livro",b)
    arquivo = open('lista_de_emprestimo.txt', 'a')
-   atualiza_emp(a)
+   atualiza_l(a)
    desti = 'livros dentro/' + b + '.txt'
    source = 'livros fora/' + b + '.txt'
    #joao & arte 08/16/2022, 18:08:46
