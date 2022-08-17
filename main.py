@@ -37,13 +37,21 @@ def verifica( string1):
    readfile = file1.read()
    if string1 in readfile:
       file1.close()
+      print("achou")
       return 0
    else:
       file1.close()
       return 1
    pass
 def erro(param):
-   print("erro no "+param)
+
+   newWindow = tk.Toplevel(app)
+   param="erro : "+param
+   labelExample = tk.Label(newWindow, text=param)
+   buttonExample = tk.Button(newWindow, text="ok", command=newWindow.destroy)
+   labelExample.pack()
+   buttonExample.pack()
+   print(param)
    pass
 def verifica_d(param):
    try:
@@ -57,7 +65,7 @@ def verifica_d(param):
    pass
 def salva_emp(newWindow,a,b):
    if(b==""):
-      erro("colocar autor")
+      erro("colocar nome do livro")
    elif (a==""):
       erro("colocar nome")
    elif(0==verifica_d((b))):
@@ -91,23 +99,20 @@ def salva_dev(a,b):
    shutil.move(source, desti)
    app.destroy();
    pass
-def salva_alu(newWindowa,newWindow,a,b,c,d,e):
-   print("nomel",a)
+def salva_alu(newWindowa,c,d,e):
    print("ctr",d)
    print("telefone", e)
    print("nome",c )
-   print("autor", b)
    if (0==(verifica(c))):
       erro("ja tem esse nome")
    else:
       arquivo = open('lista_de_alunos.txt', 'a')
       arquivo.write(c+" & "+d+" & "+e+"\n")
       arquivo.close()
-      salva_liv(newWindow,a,b)
-   newWindowa.destroy();
-   pass
-def salva_liv(newWindow,a,b):
+      cadlivro(newWindowa)
 
+   pass
+def salva_liv(newWindow,new,a,b):
    print("nome",a)
    print("autor",b)
    arquivo = open('lista_de_livros.txt', 'a')
@@ -116,28 +121,25 @@ def salva_liv(newWindow,a,b):
    arquivo = open('livros dentro/'+a+'.txt', 'a')
    arquivo.write("autor: " + b + "\n")
    arquivo.close()
+   new.destroy()
    newWindow.destroy()
    pass
 def listar():
    pass
-def cadlivro(newWindowa,fl,n,t,c):
+def cadlivro(newWindowa):
    newWindow = tk.Toplevel(app)
    labelExample = tk.Label(newWindow, text="Nome")
    labelExample.pack()
    entrada = tk.Entry(newWindow, font="arial 15 bold")
    entrada.pack()
-
    label = tk.Label(newWindow, text="autor")
    label.pack()
    entrad = tk.Entry(newWindow, font="arial 15 bold")
    entrad.pack()
 
-   if(fl):
-      buttonExample = tk.Button(newWindow, text="proxima",command=lambda: salva_liv(newWindow,entrada.get(),entrad.get()))
-      buttonExample.pack()
-   else:
-      buttonExample = tk.Button(newWindow, text="proxima", command=lambda: salva_alu(newWindowa,newWindow,entrada.get(), entrad.get(),n,t,c))
-      buttonExample.pack()
+   buttonExample = tk.Button(newWindow, text="proxima",command=lambda: salva_liv(newWindow,newWindowa,entrada.get(),entrad.get()))
+   buttonExample.pack()
+
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
    pass
@@ -189,7 +191,7 @@ def cadaluno():
    labele.pack()
    entra = tk.Entry(newWindow, font="arial 15 bold")
    entra.pack()
-   buttonExample = tk.Button(newWindow, text="proxima", command=lambda :cadlivro(newWindow,False,entrada.get(),entrad.get(),entra.get()))
+   buttonExample = tk.Button(newWindow, text="proxima", command=lambda :salva_alu(newWindow,entrada.get(),entrad.get(),entra.get()))
    buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
@@ -205,12 +207,13 @@ app = tk.Tk()
 app.geometry("300x700")
 
 app.configure( )
+newWindow = tk.Toplevel(app)
+newWindow.destroy()
 buttona = tk.Button(app,text="Cadastrar aluno",width=15,height=2, command=cadaluno ,fg="black")
-buttonb = tk.Button(app, text="Cadastar o livro",width=15,height=2, command=lambda: cadlivro(True,0,0,0))
+buttonb = tk.Button(app, text="Cadastar o livro",width=15,height=2, command=lambda: cadlivro(newWindow))
 buttonc = tk.Button(app,text="emprestar",width=15,height=2,command=emprestar)
 buttond = tk.Button(app,text="devolver",width=15,height=2,command=devolver)
 buttone = tk.Button(app,text="detalhes",width=30,height=2,command=listar)
-
 buttona.grid(row=1,column=0, padx= 10, pady=10)
 buttonb.grid(row=1,column=1, padx= 10, pady=10)
 buttonc.grid(row=2,column=1, padx= 10, pady=10)
