@@ -4,8 +4,8 @@ import tkinter as tk
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join
-from datetime import date
-from PIL import Image, ImageTk
+from PIL import Image
+
 def listald():
     path = 'livros dentro'
     ln=[]
@@ -282,8 +282,8 @@ buttonc.grid(row=2,column=1, padx= 10, pady=10)
 buttond.grid(row=2,column=0, padx= 10, pady=10)
 buttone.grid(row=3,column=0, columnspan=2)
 
-photo = tk.PhotoImage(file =r"Marca d'água 2.png")
-photo = photo.subsample(10, 10)
+photo = tk.PhotoImage(file ="icon.png")
+photo = photo.subsample(5, 5)
 labelExample = tk.Label(app,image = photo)
 labelExample.grid(row=4,column=0, columnspan=2,)
 app.mainloop()
