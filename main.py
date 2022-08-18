@@ -7,12 +7,14 @@ from datetime import datetime
 from datetime import date
 from PIL import Image, ImageTk
 
-def listar():
-    print("entrou")
-    arquivo=open("lista_de_emprestimo.txt","r")
+def lista_t(parametro):
+    lista = []
+    arquivo=open(parametro,"r")
     nomes = arquivo.readlines()
     for nome in nomes:
+        lista.append(nome)
         print(nome)
+    return lista
     pass
 def atualiza_l(nome):
     print("entrou")
@@ -57,10 +59,10 @@ def verifica_d(param):
    try:
       f = open('livros dentro/'+param+'.txt')
       f.close()
-      print('livro encontrado ', param)
       return 1
    except:
-      print('livro nao encontrado ',param)
+      print("dddd")
+      erro('livro nao encontrado '+param)
       return 0
    pass
 def salva_emp(newWindow,a,b):
@@ -89,16 +91,25 @@ def salva_emp(newWindow,a,b):
       newWindow.destroy()
    pass
 def salva_dev(a,b):
-   print("aluno",a)
-   print("livro",b)
-   arquivo = open('lista_de_emprestimo.txt', 'a')
-   atualiza_l(a)
-   desti = 'livros dentro/' + b + '.txt'
-   source = 'livros fora/' + b + '.txt'
-   #joao & arte 08/16/2022, 18:08:46
-   shutil.move(source, desti)
-   app.destroy();
-   pass
+    if (b == ""):
+        erro("colocar nome do livro")
+    elif (a == ""):
+        erro("colocar nome")
+    elif (verifica_d((b))):
+        erro("livro  esta na escola")
+    elif (verifica(a)):
+        erro("aluno nao encontrado")
+    else:
+       print("aluno",a)
+       print("livro",b)
+       arquivo = open('lista_de_emprestimo.txt', 'a')
+       atualiza_l(a)
+       desti = 'livros dentro/' + b + '.txt'
+       source = 'livros fora/' + b + '.txt'
+       #joao & arte 08/16/2022, 18:08:46
+       shutil.move(source, desti)
+       app.destroy();
+    pass
 def salva_alu(newWindowa,c,d,e):
    print("ctr",d)
    print("telefone", e)
@@ -113,19 +124,62 @@ def salva_alu(newWindowa,c,d,e):
 
    pass
 def salva_liv(newWindow,new,a,b):
-   print("nome",a)
-   print("autor",b)
-   arquivo = open('lista_de_livros.txt', 'a')
-   arquivo.write(a+" & "+b+"\n")
-   arquivo.close()
-   arquivo = open('livros dentro/'+a+'.txt', 'a')
-   arquivo.write("autor: " + b + "\n")
-   arquivo.close()
-   new.destroy()
-   newWindow.destroy()
-   pass
+    if (b == ""):
+        erro("colocar nome do livro")
+    elif (a == ""):
+        erro("colocar nome")
+    else:
+       print("nome",a)
+       print("autor",b)
+       arquivo = open('lista_de_livros.txt', 'a')
+       arquivo.write(a+" & "+b+"\n")
+       arquivo.close()
+       arquivo = open('livros dentro/'+a+'.txt', 'a')
+       arquivo.write("autor: " + b + "\n")
+       arquivo.close()
+       new.destroy()
+       newWindow.destroy()
+    pass
 def listar():
-   pass
+    newWindow = tk.Toplevel(app)
+    labelExample = tk.Label(newWindow, text="listas")
+    buttonExample1 = tk.Button(newWindow, text="lista livros totais", command=listarlivros)
+    buttonExample2 = tk.Button(newWindow, text="lista empestimos em abreto", command=listaremp)
+    buttonExample3 = tk.Button(newWindow, text="lista alunos cadastrados", command=listaralunos)
+    buttonExample4 = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
+    labelExample.pack()
+    buttonExample1.pack()
+    buttonExample2.pack()
+    buttonExample3.pack()
+    buttonExample4.pack()
+    pass
+def listarlivros():
+    newWindow = tk.Toplevel(app)
+    labelExample = tk.Label(newWindow, text="lista de livros ao todo da escola\nnome do livro, autor")
+    labelExamp = tk.Label(newWindow, text=str(''.join(lista_t("lista_de_livros.txt"))))
+    buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
+    labelExample.pack()
+    labelExamp.pack()
+    buttonExample.pack()
+    pass
+def listaralunos():
+    newWindow = tk.Toplevel(app)
+    labelExample = tk.Label(newWindow, text="lista de alunos da escola\nnome do aluno, ctr, telefone")
+    labelExamp = tk.Label(newWindow, text=str(''.join(lista_t("lista_de_alunos.txt"))))
+    buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
+    labelExample.pack()
+    labelExamp.pack()
+    buttonExample.pack()
+    pass
+def listaremp():
+    newWindow = tk.Toplevel(app)
+    labelExample = tk.Label(newWindow, text="lista de livros fora da escola\nnome do aluno, nome do livro,data e hora que pegou")
+    labelExamp = tk.Label(newWindow, text=str(''.join(lista_t("lista_de_emprestimo.txt"))))
+    buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
+    labelExample.pack()
+    labelExamp.pack()
+    buttonExample.pack()
+    pass
 def cadlivro(newWindowa):
    newWindow = tk.Toplevel(app)
    labelExample = tk.Label(newWindow, text="Nome")
