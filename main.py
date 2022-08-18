@@ -1,6 +1,4 @@
-# This is a sample Python script.
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
 import shutil
 import tkinter as tk
 from datetime import datetime
@@ -63,7 +61,6 @@ def verifica( string1):
       return 1
    pass
 def erro(param):
-
    newWindow = tk.Toplevel(app)
    param="erro : "+param
    labelExample = tk.Label(newWindow, text=param)
@@ -138,7 +135,6 @@ def salva_alu(newWindowa,c,d,e):
       arquivo.write(c+" & "+d+" & "+e+"\n")
       arquivo.close()
       cadlivro(newWindowa)
-
    pass
 def salva_liv(newWindow,new,a,b):
     if (b == ""):
@@ -171,7 +167,6 @@ def listar():
     buttonExample3.pack()
     buttonExample5.pack()
     buttonExample4.pack()
-
     pass
 def listarlivros():
     newWindow = tk.Toplevel(app)
@@ -210,10 +205,8 @@ def cadlivro(newWindowa):
    label.pack()
    entrad = tk.Entry(newWindow, font="arial 15 bold")
    entrad.pack()
-
    buttonExample = tk.Button(newWindow, text="proxima",command=lambda: salva_liv(newWindow,newWindowa,entrada.get(),entrad.get()))
    buttonExample.pack()
-
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
    pass
@@ -227,7 +220,6 @@ def emprestar():
    label.pack()
    entrad = tk.Entry(newWindow, font="arial 15 bold")
    entrad.pack()
-
    buttonExample = tk.Button(newWindow, text="concluir",command=lambda: salva_emp(newWindow,entrada.get(),entrad.get()))
    buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
@@ -276,7 +268,6 @@ def createNewWindow():
     pass
 app = tk.Tk()
 app.geometry("300x700")
-
 app.configure( )
 newWindow = tk.Toplevel(app)
 newWindow.destroy()
@@ -290,4 +281,9 @@ buttonb.grid(row=1,column=1, padx= 10, pady=10)
 buttonc.grid(row=2,column=1, padx= 10, pady=10)
 buttond.grid(row=2,column=0, padx= 10, pady=10)
 buttone.grid(row=3,column=0, columnspan=2)
+
+photo = tk.PhotoImage(file =r"Marca d'água 2.png")
+photo = photo.subsample(10, 10)
+labelExample = tk.Label(app,image = photo)
+labelExample.grid(row=4,column=0, columnspan=2,)
 app.mainloop()
