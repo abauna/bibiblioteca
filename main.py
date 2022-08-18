@@ -4,9 +4,26 @@
 import shutil
 import tkinter as tk
 from datetime import datetime
+from os import listdir
+from os.path import isfile, join
 from datetime import date
 from PIL import Image, ImageTk
-
+def listald():
+    path = 'livros dentro'
+    ln=[]
+    files = [f for f in listdir(path) if isfile(join(path, f))]
+    for livro in files:
+        livro=livro[:-4]
+        ln.append(livro+"\n")
+        print(livro)
+    newWindow = tk.Toplevel(app)
+    labelExample = tk.Label(newWindow, text="lista de livros na escola\n")
+    labelExamp = tk.Label(newWindow, text=str(''.join(ln)))
+    buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
+    labelExample.pack()
+    labelExamp.pack()
+    buttonExample.pack()
+    pass
 def lista_t(parametro):
     lista = []
     arquivo=open(parametro,"r")
@@ -146,12 +163,15 @@ def listar():
     buttonExample1 = tk.Button(newWindow, text="lista livros totais", command=listarlivros)
     buttonExample2 = tk.Button(newWindow, text="lista empestimos em abreto", command=listaremp)
     buttonExample3 = tk.Button(newWindow, text="lista alunos cadastrados", command=listaralunos)
+    buttonExample5 = tk.Button(newWindow, text="lista de livro disponiveis", command=listald)
     buttonExample4 = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
     labelExample.pack()
     buttonExample1.pack()
     buttonExample2.pack()
     buttonExample3.pack()
+    buttonExample5.pack()
     buttonExample4.pack()
+
     pass
 def listarlivros():
     newWindow = tk.Toplevel(app)
@@ -207,10 +227,7 @@ def emprestar():
    label.pack()
    entrad = tk.Entry(newWindow, font="arial 15 bold")
    entrad.pack()
-   label = tk.Label(newWindow, text="autor")
-   label.pack()
-   entra = tk.Entry(newWindow, font="arial 15 bold")
-   entra.pack()
+
    buttonExample = tk.Button(newWindow, text="concluir",command=lambda: salva_emp(newWindow,entrada.get(),entrad.get()))
    buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
