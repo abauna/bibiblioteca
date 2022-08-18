@@ -281,7 +281,6 @@ buttonb.grid(row=1,column=1, padx= 10, pady=10)
 buttonc.grid(row=2,column=1, padx= 10, pady=10)
 buttond.grid(row=2,column=0, padx= 10, pady=10)
 buttone.grid(row=3,column=0, columnspan=2)
-
 photo = tk.PhotoImage(file ="icon.png")
 photo = photo.subsample(5, 5)
 labelExample = tk.Label(app,image = photo)
