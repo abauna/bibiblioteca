@@ -15,12 +15,19 @@ def listald():
         ln.append(livro+"\n")
         print(livro)
     newWindow = tk.Toplevel(app)
+    #newWindow.geometry("900x100")
     labelExample = tk.Label(newWindow, text="lista de livros na escola\n")
-    labelExamp = tk.Label(newWindow, text=str(''.join(ln)))
     buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
-    labelExample.pack()
-    labelExamp.pack()
-    buttonExample.pack()
+    text = tk.Text(newWindow, height=10)
+    text.grid(row=1, column=0, sticky=tk.EW)
+    scrollbar = tk.Scrollbar(newWindow, orient='vertical', command=text.yview)
+    scrollbar.grid(row=1, column=1, sticky=tk.NS)
+    text['yscrollcommand'] = scrollbar.set
+    #text.insert(f'{0}.0',str(''.join(ln)))
+    position = f'{1}.0'
+    text.insert(position,str(''.join(ln)))
+    labelExample.grid(row=0, column=0)
+    buttonExample.grid(row=2, column=0)
     pass
 def lista_t(parametro):
     lista = []
@@ -170,30 +177,46 @@ def listar():
     pass
 def listarlivros():
     newWindow = tk.Toplevel(app)
+    newWindow.geometry("900x100")
     labelExample = tk.Label(newWindow, text="lista de livros ao todo da escola\nnome do livro, autor")
-    labelExamp = tk.Label(newWindow, text=str(''.join(lista_t("lista_de_livros.txt"))))
     buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
-    labelExample.pack()
-    labelExamp.pack()
-    buttonExample.pack()
+    text = tk.Text(newWindow, height=10)
+    text.grid(row=1, column=0, sticky=tk.EW)
+    labelExample.grid(row=0, column=0, sticky='ns')
+    scrollbar = tk.Scrollbar(newWindow, orient='vertical', command=text.yview)
+    scrollbar.grid(row=1, column=1, sticky=tk.NS)
+    text['yscrollcommand'] = scrollbar.set
+    position = f'{1}.0'
+    text.insert(f'{1}.0',str(''.join(lista_t("lista_de_livros.txt"))))
+    buttonExample.grid(row=3, column=0)
     pass
 def listaralunos():
     newWindow = tk.Toplevel(app)
     labelExample = tk.Label(newWindow, text="lista de alunos da escola\nnome do aluno, ctr, telefone")
     labelExamp = tk.Label(newWindow, text=str(''.join(lista_t("lista_de_alunos.txt"))))
     buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
-    labelExample.pack()
-    labelExamp.pack()
-    buttonExample.pack()
+    text = tk.Text(newWindow, height=10)
+    text.grid(row=1, column=0, sticky=tk.EW)
+    scrollbar = tk.Scrollbar(newWindow, orient='vertical', command=text.yview)
+    scrollbar.grid(row=1, column=1, sticky=tk.NS)
+    text['yscrollcommand'] = scrollbar.set
+    text.insert(f'{1}.0',str(''.join(lista_t("lista_de_alunos.txt"))));
+    labelExample.grid(row=0, column=0)
+    buttonExample.grid(row=3, column=0)
     pass
 def listaremp():
     newWindow = tk.Toplevel(app)
     labelExample = tk.Label(newWindow, text="lista de livros fora da escola\nnome do aluno, nome do livro,data e hora que pegou")
     labelExamp = tk.Label(newWindow, text=str(''.join(lista_t("lista_de_emprestimo.txt"))))
     buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
-    labelExample.pack()
-    labelExamp.pack()
-    buttonExample.pack()
+    text = tk.Text(newWindow, height=10)
+    text.grid(row=1, column=0, sticky=tk.EW)
+    scrollbar = tk.Scrollbar(newWindow, orient='vertical', command=text.yview)
+    scrollbar.grid(row=1, column=1, sticky=tk.NS)
+    text['yscrollcommand'] = scrollbar.set
+    text.insert(f'{1}.0', str(''.join(lista_t("lista_de_emprestimo.txt"))));
+    labelExample.grid(row=0, column=0)
+    buttonExample.grid(row=3, column=0)
     pass
 def cadlivro(newWindowa):
    newWindow = tk.Toplevel(app)
