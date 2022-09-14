@@ -177,7 +177,8 @@ def listar():
     pass
 def listarlivros():
     newWindow = tk.Toplevel(app)
-    newWindow.geometry("900x100")
+    newWindow.geometry("675x300")
+    newWindow.configure()
     labelExample = tk.Label(newWindow, text="lista de livros ao todo da escola\nnome do livro, autor")
     buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
     text = tk.Text(newWindow, height=10)
@@ -191,7 +192,10 @@ def listarlivros():
     buttonExample.grid(row=3, column=0)
     pass
 def listaralunos():
+
     newWindow = tk.Toplevel(app)
+    newWindow.geometry("650x700")
+    newWindow.configure()
     labelExample = tk.Label(newWindow, text="lista de alunos da escola\nnome do aluno, ctr, telefone")
     labelExamp = tk.Label(newWindow, text=str(''.join(lista_t("lista_de_alunos.txt"))))
     buttonExample = tk.Button(newWindow, text="fechar", command=newWindow.destroy)
@@ -232,7 +236,6 @@ def cadlivro(newWindowa):
    label.pack()
    entra = tk.Entry(newWindow, font="arial 15 bold")
    entra.pack()
-
    buttonExample = tk.Button(newWindow, text="proxima",command=lambda: salva_liv(newWindow,newWindowa,(entrada.get()+entrad.get()),(entra.get())))
    buttonExample.pack()
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
