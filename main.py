@@ -1,10 +1,14 @@
-
 import shutil
 import tkinter as tk
 from datetime import datetime
 from os import listdir
 from os.path import isfile, join
 from PIL import Image
+#from ttkwidgets import AutocompleteEntry
+import re
+from tkinter import font
+from tkinter import filedialog
+
 
 def listald():
     path = 'livros dentro'
@@ -241,24 +245,131 @@ def cadlivro(newWindowa):
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
    buttonExample.pack()
    pass
+
+class AutocompleteEntry(tk.Entry):
+
+    def __init__(self, autocompleteList, *args, **kwargs):
+
+        # Listbox length
+        if 'listboxLength' in kwargs:
+            self.listboxLength = kwargs['listboxLength']
+            del kwargs['listboxLength']
+        else:
+            self.listboxLength = 8
+
+        # Custom matches function
+        if 'matchesFunction' in kwargs:
+            self.matchesFunction = kwargs['matchesFunction']
+            del kwargs['matchesFunction']
+        else:
+            def matches(fieldValue, acListEntry):
+                pattern = re.compile('.*' + re.escape(fieldValue) + '.*', re.IGNORECASE)
+                return re.match(pattern, acListEntry)
+
+            self.matchesFunction = matches
+
+        tk.Entry.__init__(self, *args, **kwargs)
+        self.focus()
+
+        self.autocompleteList = autocompleteList
+
+        self.var = self["textvariable"]
+        if self.var == '':
+            self.var = self["textvariable"] = tk.StringVar()
+
+        self.var.trace('w', self.changed)
+        self.bind("<Right>", self.selection)
+        self.bind("<Up>", self.moveUp)
+        self.bind("<Down>", self.moveDown)
+
+        self.listboxUp = False
+    def changed(self, name, index, mode):
+        if self.var.get() == '':
+            if self.listboxUp:
+                self.listbox.destroy()
+                self.listboxUp = False
+        else:
+            words = self.comparison()
+            if words:
+                if not self.listboxUp:
+                    self.listbox = tk.Listbox(width=self["width"], height=self.listboxLength)
+                    self.listbox.bind("<Button-1>", self.selection)
+                    self.listbox.bind("<Right>", self.selection)
+                    self.listbox.place(x=self.winfo_x(), y=self.winfo_y() + self.winfo_height())
+                    self.listboxUp = True
+
+                self.listbox.delete(0, tk.END)
+                for w in words:
+                    self.listbox.insert(tk.END, w)
+            else:
+                if self.listboxUp:
+                    self.listbox.destroy()
+                    self.listboxUp = False
+    def selection(self, event):
+        if self.listboxUp:
+            self.var.set(self.listbox.get(tk.ACTIVE))
+            self.listbox.destroy()
+            self.listboxUp = False
+            self.icursor(tk.END)
+    def moveUp(self, event):
+        if self.listboxUp:
+            if self.listbox.curselection() == ():
+                index = '0'
+            else:
+                index = self.listbox.curselection()[0]
+
+            if index != '0':
+                self.listbox.selection_clear(first=index)
+                index = str(int(index) - 1)
+
+                self.listbox.see(index)  # Scroll!
+                self.listbox.selection_set(first=index)
+                self.listbox.activate(index)
+    def moveDown(self, event):
+        if self.listboxUp:
+            if self.listbox.curselection() == ():
+                index = '0'
+            else:
+                index = self.listbox.curselection()[0]
+
+            if index != tk.END:
+                self.listbox.selection_clear(first=index)
+                index = str(int(index) + 1)
+
+                self.listbox.see(index)  # Scroll!
+                self.listbox.selection_set(first=index)
+                self.listbox.activate(index)
+    def comparison(self):
+        return [w for w in self.autocompleteList if self.matchesFunction(self.var.get(), w)]
+if __name__ == '__main__':
+    autocompleteList =lista_t("lista_de_livros.txt")
+    def matches(fieldValue, acListEntry):
+        pattern = re.compile(re.escape(fieldValue) + '.*', re.IGNORECASE)
+        return re.match(pattern, acListEntry)
+
+
 def emprestar():
    newWindow = tk.Toplevel(app)
+
+
    labelExample = tk.Label(newWindow, text="aluno")
-   labelExample.pack()
-   entrada = tk.Entry(newWindow, font="arial 15 bold")
-   entrada.pack()
+   labelExample.grid(row=0,column=0, padx= 10, pady=10)
+   #entry = AutocompleteEntry(newWindow,width=30,font=('Times', 18),completevalues=countries)
+   entrada = AutocompleteEntry(autocompleteList,newWindow,listboxLength=6, width=32,  matchesFunction=matches)
+   #entrada = tk.Entry(newWindow, font="arial 15 bold")
+   entrada.grid(row=1,column=0, padx= 10, pady=10)
    label = tk.Label(newWindow, text="livro")
-   label.pack()
+   label.grid(row=2,column=0, padx= 10, pady=10)
    entrad = tk.Entry(newWindow, font="arial 15 bold")
-   entrad.pack()
+   entrad.grid(row=3,column=0, padx= 10, pady=10)
    label = tk.Label(newWindow, text="n de exemplares")
-   label.pack()
+   label.grid(row=4,column=0, padx= 10, pady=10)
    entra = tk.Entry(newWindow, font="arial 15 bold")
-   entra.pack()
+   entra.grid(row=5,column=0, padx= 10, pady=10)
    buttonExample = tk.Button(newWindow, text="concluir",command=lambda: salva_emp(newWindow,entrada.get(),(entrad.get()+entra.get())))
-   buttonExample.pack()
+   buttonExample.grid(row=6,column=0, padx= 10, pady=10)
    buttonExample = tk.Button(newWindow, text="cancelar", command=newWindow.destroy)
-   buttonExample.pack()
+   buttonExample.grid(row=6,column=1, padx= 10, pady=10)
    pass
 def devolver():
    newWindow = tk.Toplevel(app)
